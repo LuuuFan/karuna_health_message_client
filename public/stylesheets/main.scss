@@ -1,0 +1,79 @@
+@import url('https://use.fontawesome.com/releases/v5.7.2/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Montserrat');
+@import './reset';
+
+// colors
+$main-color: #000000;
+$second-color: #45484d;
+$hover: #0099fe;
+
+.main{
+	width: 100vw;
+}
+
+header{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3em 0;
+	h1{
+		font-size: 2em;
+	}
+}
+
+.conversation_index_container{
+	width: 50%;
+	margin: 0 auto;
+	display: flex;
+	align-items: flex-start;
+	div.list{
+		width: 100%;
+	}
+	ul{
+		width: 100%;
+		transition: width .5s;
+		li{
+			position: relative;
+			display: flex;
+			align-items: center;
+			margin: 1em;
+			padding: 1em;
+			border-radius: 5px;
+			cursor: pointer;
+			box-shadow: 2px 1px 4px 0 rgba(0,0,0,.2);
+			i{
+				font-size: 3em;
+				color: lightgray;
+				margin-right: 0.2em;
+			}
+			.unread{
+				text-align: center;
+				position: absolute;
+				right: 1em;
+				top: 1em;
+				width: 1em;
+				height: 1em;
+				font-size: 0.6em;
+				padding: 1em;
+				background-color: green;
+				color: white;
+				border-radius: 50%;
+			}
+			.last_message{
+				font-size: 0.8em;
+				color: #777;
+			}
+		}
+		li:hover{
+			transform: translate(2px, 2px);
+			transition: all .5s;
+		}
+	}
+	div.left{
+		width: 30%;
+		transition: width .5s;
+		overflow: hidden;
+	}
+
+}
