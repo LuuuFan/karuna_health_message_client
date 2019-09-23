@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConversationIndex from './conversation_index';
-import { fetchConversation } from '../../actions/conversation';
+import { fetchConversation, receiveMessage, readMessage } from '../../actions/conversation';
 import { withRouter } from 'react-router';
 
 
@@ -12,6 +12,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
 	fetchConversation: id => dispatch(fetchConversation(id)),
+	receiveMessage: (message, id) => dispatch(receiveMessage(message, id)),
+	readMessage: uuid => dispatch(readMessage(uuid)),
 });
 
 

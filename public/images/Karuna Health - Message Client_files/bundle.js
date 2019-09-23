@@ -37207,8 +37207,6 @@ var _message = __webpack_require__(119);
 
 var _message2 = _interopRequireDefault(_message);
 
-var _reactRouterDom = __webpack_require__(31);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37303,21 +37301,6 @@ var ConversationDetail = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ className: 'conversation_detail_container' },
-				conversation ? _react2.default.createElement(
-					'div',
-					{ className: 'title' },
-					_react2.default.createElement('i', { className: 'far fa-user' }),
-					_react2.default.createElement(
-						'span',
-						null,
-						conversation.name
-					),
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', className: 'close' },
-						'\xD7'
-					)
-				) : "",
 				loading || !conversation.messages ? _react2.default.createElement(
 					'div',
 					null,

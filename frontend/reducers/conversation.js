@@ -1,9 +1,9 @@
-import {RECEIVE_CONVERSATIONS, RECEIVE_CONVERSATION} from '../actions/conversation';
+import { RECEIVE_CONVERSATIONS, RECEIVE_CONVERSATION, RECEIVE_MESSAGE, READ_MESSAGE } from '../actions/conversation';
 
 
 const conversationReducer = (state = {}, action) => {
 	Object.freeze(state);
-	let newState;
+	let newState, localMessage;
 	switch(action.type){
 		case RECEIVE_CONVERSATIONS:
 			const conversations = {};
@@ -15,8 +15,24 @@ const conversationReducer = (state = {}, action) => {
 		
 		case RECEIVE_CONVERSATION:
 			newState = Object.assign({}, state);
-			const currentConversationUUID = localStorage.getItem("currentConversation");
-			newState[currentConversationUUID].messages = action.conversation.messages;
+			localMessage = JSON.parse(localStorage.getItem("localMessage") || "{}");
+			newState[action.id].messages = action.conversation.messages.concat(localMessage[action.id] || []).sort((a, b) => new Date(b) - new Date(a));
+			return newState;
+
+		case RECEIVE_MESSAGE:
+			newState = Object.assign({}, state);
+			// set local message store:
+			localMessage = JSON.parse(localStorage.getItem("localMessage") || "{}");
+			localMessage[action.conversation_uuid] = localMessage[action.conversation_uuid] || [];
+			localMessage[action.conversation_uuid].push(action.message);
+			localStorage.setItem("localMessage", JSON.stringify(localMessage));
+
+			newState[action.conversation_uuid].messages.push(action.message);
+			return newState;
+
+		case READ_MESSAGE:
+			newState = Object.assign({}, state);
+			newState[action.uuid].unread = 0;
 			return newState;
 		
 		default: 

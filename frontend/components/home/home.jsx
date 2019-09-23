@@ -19,15 +19,7 @@ class Home extends React.Component {
 
 	render(){
 		const { loading } = this.state;
-		return (
-			<div>
-				{loading ? 
-					<div>Loading...</div>
-					:
-					<ConversationIndexContainer />
-				}
-			</div>
-		);
+		return loading ? (<div>Loading...</div>) : (<ConversationIndexContainer />)
 	}
 }
 

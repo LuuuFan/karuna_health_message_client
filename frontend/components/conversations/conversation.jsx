@@ -8,19 +8,19 @@ class Conversation extends React.Component{
 	}
 
 	render(){
-		const { conversation } = this.props;
+		const { conversation, uuid } = this.props;
 		return(
 			<Link to={`/${conversation.uuid}`}>
-				<li className='conversation_preview'>
+				<li className={conversation.uuid === uuid ? "conversation_preview selected" : "conversation_preview"}>
 					<i className="far fa-user"></i>
-					<div className='content'>
+					<div className="content">
 						<p>{ conversation.name }</p>
 						{conversation.unread ? 
-							<span className='unread'>{ conversation.unread }</span>
+							<span className="unread">{ conversation.unread }</span>
 						: 
 							""
 						}
-						<span className='last_message'> Last Message : { conversation.last_message.created_at }</span>
+						<span className="last_message"> Last Message : { conversation.last_message.created_at }</span>
 					</div>
 				</li>
 			</Link>

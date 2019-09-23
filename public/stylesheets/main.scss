@@ -3,12 +3,15 @@
 @import './reset';
 
 // colors
-$main-color: #000000;
+$main-color: #2467f6;
 $second-color: #45484d;
 $hover: #0099fe;
 
 .main{
 	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
 header{
@@ -16,64 +19,211 @@ header{
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	height: 10vh;
 	padding: 3em 0;
 	h1{
 		font-size: 2em;
 	}
 }
 
+
+form{
+	width: 100%;
+	input{
+		width: 100%;
+		border-radius: 5px;
+		border: 1px solid lightgray;
+	}
+}
+
+.inline{
+	display: flex;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+	align-items: center;
+	input{
+		border: none;
+	}
+}
+
+span.close{
+	height: 1.2em;
+	width: 1.2em;
+	font-size: 0.7em;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ececec;
+	color: white;
+	margin-right: 0.5em;
+}
+
+span.close:hover{
+	color: black;
+	transition: all .5s;
+}
+
+i.fa-user{
+	font-size: 2em;
+	color: lightgray;
+	margin-right: 1em;
+}
+
 .conversation_index_container{
 	width: 50%;
+	height: 90vh;
 	margin: 0 auto;
 	display: flex;
 	align-items: flex-start;
+	li{
+		position: relative;
+		display: flex;
+		align-items: center;
+		margin: 1em 0;
+		padding: 1em;
+		border-radius: 5px;
+		cursor: pointer;
+		box-shadow: 2px 1px 4px 0 rgba(0,0,0,.2);
+	}
 	div.list{
 		width: 100%;
-	}
-	ul{
-		width: 100%;
-		transition: width .5s;
-		li{
-			position: relative;
-			display: flex;
-			align-items: center;
-			margin: 1em;
-			padding: 1em;
-			border-radius: 5px;
-			cursor: pointer;
-			box-shadow: 2px 1px 4px 0 rgba(0,0,0,.2);
-			i{
-				font-size: 3em;
-				color: lightgray;
-				margin-right: 0.2em;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		ul{
+			flex: 1;
+			width: 100%;
+			overflow-y: auto;
+			transition: width .5s;
+			li{
+				.unread{
+					text-align: center;
+					position: absolute;
+					right: 1em;
+					top: 1em;
+					width: 1em;
+					height: 1em;
+					font-size: 0.6em;
+					padding: 1em;
+					background-color: green;
+					color: white;
+					border-radius: 50%;
+				}
+				.last_message{
+					font-size: 0.8em;
+					color: #777;
+				}
 			}
-			.unread{
-				text-align: center;
-				position: absolute;
-				right: 1em;
-				top: 1em;
-				width: 1em;
-				height: 1em;
-				font-size: 0.6em;
-				padding: 1em;
-				background-color: green;
+			li:hover{
+				transform: translate(2px, 2px);
+				transition: all .5s;
+			}
+			li.selected{
+				background-color: $main-color;
 				color: white;
-				border-radius: 50%;
+				.last_message{
+					color: white;
+				}	
 			}
-			.last_message{
-				font-size: 0.8em;
-				color: #777;
-			}
-		}
-		li:hover{
-			transform: translate(2px, 2px);
-			transition: all .5s;
 		}
 	}
 	div.left{
 		width: 30%;
 		transition: width .5s;
+		margin-right: 5%;
 		overflow: hidden;
+		li{
+			i{
+				display: none;
+			}
+		}
 	}
+	div.conversation_detail_container{
+		width: 65%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		div.title{
+			display: flex;
+			align-items: center;
+			margin-bottom: 1em;
+			.close{
+				margin-left: auto;
+				margin-right: 0.5em;
+				font-size: 2em;
+				color: #ececec;
+				cursor: pointer;
+				transition: color .5s;
+			}
+			.close:hover{
+				color: #777;
+				transition: color .5s;
+			}
+		}
+		ul{
+			flex: 1;
+			overflow-y: auto;
+			display: flex;
+			flex-direction: column;
+			li{
+				width: auto;
+				max-width: 70%;
+				span.timestamp{
+					position: absolute;
+					right: 0;
+					font-size: 0.6em;
+					color: lightgray;
+					bottom: -1.5em;
+					white-space: nowrap;
+				}
+			}
+			li.incoming{
+				background-color: #ececec;
+				span.timestamp{
+					right: auto;
+					left: 0;
+				}
+			}
+			li.outgoing{
+				margin-left: auto;
+				background-color: $main-color;
+				color: white;
+			}
+		}
+		form{
+			height: 6vh;
+			margin-top: 1em;
+			input[type="text"]{
+				flex: 1;
+			}
+			input[type="submit"]{
+				width: auto;
+				padding: 0.5em;
+				font-size: 0.7em;
+				margin-right: 0.5em;
+				border-radius: 3px;
+				background-color: $main-color;
+				color: white;
+				cursor: pointer;
+				transition: all .5s;
+			}
+			input[type="submit"]:hover{
+				background-color: #ececec;
+				color: #777;
+				transition: all .5s;
+			}
+		}
+	}
+}
 
+@media only screen and (max-width: 1240px) {
+	.conversation_index_container{
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 960px) {
+	.conversation_index_container{
+		width: 95%;
+	}
 }
