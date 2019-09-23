@@ -34,7 +34,7 @@ module.exports = {
     path: path.resolve(__dirname, 'public', 'javascripts'),
     filename: 'bundle.js'
   },
-  plugins: prodPlugins,
+  plugins: plugins,
   resolve: {
     extensions: ['.js', '.jsx', '*']
   },
