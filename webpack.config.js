@@ -3,13 +3,14 @@ const webpack = require("webpack");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 let plugins = [
+]; // if using any plugins for both dev and production
+
+const devPlugins = []; // if using any plugins for development
+
+const prodPlugins = [
   new MinifyPlugin({}, {
     sourceMap: false,
   }),
-]; // if using any plugins for both dev and production
-let devPlugins = []; // if using any plugins for development
-
-const prodPlugins = [
   new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': JSON.stringify('production')
@@ -33,7 +34,7 @@ module.exports = {
     path: path.resolve(__dirname, 'public', 'javascripts'),
     filename: 'bundle.js'
   },
-  plugins: devPlugins,
+  plugins: prodPlugins,
   resolve: {
     extensions: ['.js', '.jsx', '*']
   },
