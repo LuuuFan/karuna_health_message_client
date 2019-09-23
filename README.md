@@ -9,6 +9,6 @@ How to run on local:
 	npm install
 	python -m SimpleHTTPServer 3000
 ```
-then open browerser to visit: localhost:3000
+then open browerser to visit: http://localhost:3000/
 
-![alt text](https://github.com/LuuuFan/karuna_health_message_client/blob/master/public/images/Screen%20Shot%202019-09-22%20at%209.00.08%20PM.png "logo")
+![alt text](https://github.com/LuuuFan/karuna_health_message_client/blob/master/public/images/Screen%20Shot%202019-09-22%20at%209.00.08%20PM.png "screenshot")
