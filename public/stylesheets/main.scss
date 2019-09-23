@@ -35,6 +35,7 @@ header{
 		width: 5em;
 		height: 5em;
 	}
+	color: lightgray;
 }
 
 form{
@@ -104,7 +105,6 @@ i.fa-user{
 			flex: 1;
 			width: 100%;
 			overflow-y: auto;
-			transition: width .5s;
 			li{
 				.unread{
 					text-align: center;
@@ -164,6 +164,15 @@ i.fa-user{
 				color: #ececec;
 				cursor: pointer;
 				transition: color .5s;
+			}
+			i.fa-user{
+				color: $main-color;
+			}
+			.back{
+				display: none;
+				color: #ececec;
+				font-size: 2em;
+				margin-right: 1em;
 			}
 			.close:hover{
 				color: #777;
@@ -233,7 +242,25 @@ i.fa-user{
 }
 
 @media only screen and (max-width: 960px) {
+	header{
+		text-align: center;
+		width: 85%;
+		margin: 0 auto;
+	}
 	.conversation_index_container{
-		width: 95%;
+		div.left{
+			display: none;
+		}
+		div.conversation_detail_container{
+			width: 100%;
+			div.title{
+				.close{
+					display: none;
+				}
+				.back{
+					display: block;
+				}
+			}		
+		}
 	}
 }

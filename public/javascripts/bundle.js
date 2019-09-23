@@ -37315,6 +37315,11 @@ var ConversationDetail = function (_React$Component) {
 				conversation ? _react2.default.createElement(
 					'div',
 					{ className: 'title' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/', className: 'back' },
+						_react2.default.createElement('i', { className: 'fas fa-arrow-left' })
+					),
 					_react2.default.createElement('i', { className: 'far fa-user' }),
 					_react2.default.createElement(
 						'span',

@@ -82,6 +82,7 @@ class ConversationDetail extends React.Component {
 			<div className="conversation_detail_container">
 				{conversation ? 
 					<div className="title">
+						<Link to="/" className="back"><i className="fas fa-arrow-left"></i></Link>
 						<i className="far fa-user"></i>
 						<span>{ conversation.name }</span>
 						<Link to="/" className="close">&times;</Link>
