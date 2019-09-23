@@ -1,6 +1,8 @@
 import React from 'react';
 import Message from './message';
 import {Link} from 'react-router-dom';
+import Loading from '../misc/loading';
+import NotFound from '../misc/not_found';
 
 class ConversationDetail extends React.Component {
 	constructor(props){
@@ -14,22 +16,37 @@ class ConversationDetail extends React.Component {
 
 	componentDidMount(){
 		localStorage.setItem("currentConversation", this.props.uuid);
-		this.props.fetchConversation(this.props.uuid).then(res => this.setState({loading: false}));
-		setTimeout(()=>{
-			this.props.readMessage(this.props.uuid)
-		}, 1500);
-		this.scrollToBottom();
+		this.props.fetchConversation(this.props.uuid)
+			.then(res => {
+				this.setState({loading: false})
+				setTimeout(()=>{
+					this.props.readMessage(this.props.uuid)
+				}, 1500);
+				this.scrollToBottom();
+			})
+			.catch(err => {
+				this.setState({loading: false})
+			})
+
 	}
 
 	componentDidUpdate(prevProps){
+		if (!this.props.conversation) return;
 		if (prevProps.uuid !== this.props.uuid && !this.props.conversation.messages) {
 			this.setState({loading: false});
-			this.props.fetchConversation(this.props.uuid).then(res => this.setState({loading: false}));
-			setTimeout(()=>{
-				this.props.readMessage(this.props.uuid)
-			}, 1500);
+			this.props.fetchConversation(this.props.uuid)
+				.then(res => {
+					this.setState({loading: false})
+					setTimeout(()=>{
+						this.props.readMessage(this.props.uuid)
+					}, 1500);
+					this.scrollToBottom();
+				})
+				.catch(err => {
+					this.setState({loading: false})
+				})
+
 		}
-		this.scrollToBottom();
 	}
 
 	handleInput(e){
@@ -72,20 +89,26 @@ class ConversationDetail extends React.Component {
 				: 
 					""
 				}
-				{ loading || !conversation.messages ?  
-					<div>loading...</div>
+				{ loading ?  
+					<Loading />
 				: 
+				conversation && conversation.messages ?
 				 	<ul className="message_list" ref={el => {this.messageList = el}}>
 				 		{conversation.messages.map((message, idx) => <Message message={message} key={idx}/>)}
 				 	</ul>
-					
+				:
+					<NotFound content="Cannot find messages for this conversation"/>	
 				}
-				<form onSubmit={e=>this.handleSubmit(e)}>
-					<div className="inline">
-						<input type="text" onChange={e=>this.handleInput(e)} value={message}/>
-						{message ? <input type="submit" value="Send" /> : ""}
-					</div>
-				</form>
+				{conversation && conversation.messages ?
+					<form onSubmit={e=>this.handleSubmit(e)}>
+						<div className="inline">
+							<input type="text" onChange={e=>this.handleInput(e)} value={message}/>
+							{message ? <input type="submit" value="Send" /> : ""}
+						</div>
+					</form>
+				:
+					""
+				}
 			</div>
 		)
 	}

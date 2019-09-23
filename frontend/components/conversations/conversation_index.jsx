@@ -1,7 +1,6 @@
 import React from 'react';
 import Conversation from './conversation';
 import ConversationDetail from './conversation_detail';
-// import Loading from '../loading';
 
 class ConversationIndex extends React.Component{
 	constructor(props){

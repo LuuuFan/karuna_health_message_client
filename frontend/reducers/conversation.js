@@ -16,7 +16,7 @@ const conversationReducer = (state = {}, action) => {
 		case RECEIVE_CONVERSATION:
 			newState = Object.assign({}, state);
 			localMessage = JSON.parse(localStorage.getItem("localMessage") || "{}");
-			newState[action.id].messages = action.conversation.messages.concat(localMessage[action.id] || []).sort((a, b) => new Date(b) - new Date(a));
+			newState[action.id].messages = action.conversation.messages.reverse().concat(localMessage[action.id] || []);
 			return newState;
 
 		case RECEIVE_MESSAGE:

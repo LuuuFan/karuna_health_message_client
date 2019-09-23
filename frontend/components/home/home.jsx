@@ -1,5 +1,7 @@
 import React from 'react';
 import ConversationIndexContainer from '../conversations/conversation_index_container';
+import Loading from '../misc/loading';
+
 class Home extends React.Component {
 	constructor(props){
 		super(props);
@@ -11,15 +13,13 @@ class Home extends React.Component {
 	componentDidMount(){
 		if (!Object.keys(this.props.conversations).length) {
 			this.setState({loading: true});
-			this.props.fetchConversationList().then(res => {
-				this.setState({loading: false});
-			})
+			this.props.fetchConversationList().then(res => this.setState({loading: false}))
 		}
 	}
 
 	render(){
 		const { loading } = this.state;
-		return loading ? (<div>Loading...</div>) : (<ConversationIndexContainer />)
+		return loading ? (<Loading />) : (<ConversationIndexContainer />)
 	}
 }
 

@@ -36567,6 +36567,10 @@ var _conversation_index_container = __webpack_require__(113);
 
 var _conversation_index_container2 = _interopRequireDefault(_conversation_index_container);
 
+var _loading = __webpack_require__(120);
+
+var _loading2 = _interopRequireDefault(_loading);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36597,7 +36601,7 @@ var Home = function (_React$Component) {
 			if (!Object.keys(this.props.conversations).length) {
 				this.setState({ loading: true });
 				this.props.fetchConversationList().then(function (res) {
-					_this2.setState({ loading: false });
+					return _this2.setState({ loading: false });
 				});
 			}
 		}
@@ -36606,11 +36610,7 @@ var Home = function (_React$Component) {
 		value: function render() {
 			var loading = this.state.loading;
 
-			return loading ? _react2.default.createElement(
-				'div',
-				null,
-				'Loading...'
-			) : _react2.default.createElement(_conversation_index_container2.default, null);
+			return loading ? _react2.default.createElement(_loading2.default, null) : _react2.default.createElement(_conversation_index_container2.default, null);
 		}
 	}]);
 
@@ -36712,9 +36712,7 @@ var conversationReducer = function conversationReducer() {
 		case _conversation.RECEIVE_CONVERSATION:
 			newState = Object.assign({}, state);
 			localMessage = JSON.parse(localStorage.getItem("localMessage") || "{}");
-			newState[action.id].messages = action.conversation.messages.concat(localMessage[action.id] || []).sort(function (a, b) {
-				return new Date(b) - new Date(a);
-			});
+			newState[action.id].messages = action.conversation.messages.reverse().concat(localMessage[action.id] || []);
 			return newState;
 
 		case _conversation.RECEIVE_MESSAGE:
@@ -36931,8 +36929,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import Loading from '../loading';
 
 var ConversationIndex = function (_React$Component) {
 	_inherits(ConversationIndex, _React$Component);
@@ -37209,6 +37205,14 @@ var _message2 = _interopRequireDefault(_message);
 
 var _reactRouterDom = __webpack_require__(31);
 
+var _loading = __webpack_require__(120);
+
+var _loading2 = _interopRequireDefault(_loading);
+
+var _not_found = __webpack_require__(121);
+
+var _not_found2 = _interopRequireDefault(_not_found);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37252,28 +37256,33 @@ var ConversationDetail = function (_React$Component) {
 
 			localStorage.setItem("currentConversation", this.props.uuid);
 			this.props.fetchConversation(this.props.uuid).then(function (res) {
-				return _this2.setState({ loading: false });
+				_this2.setState({ loading: false });
+				setTimeout(function () {
+					_this2.props.readMessage(_this2.props.uuid);
+				}, 1500);
+				_this2.scrollToBottom();
+			}).catch(function (err) {
+				_this2.setState({ loading: false });
 			});
-			setTimeout(function () {
-				_this2.props.readMessage(_this2.props.uuid);
-			}, 1500);
-			this.scrollToBottom();
 		}
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate(prevProps) {
 			var _this3 = this;
 
+			if (!this.props.conversation) return;
 			if (prevProps.uuid !== this.props.uuid && !this.props.conversation.messages) {
 				this.setState({ loading: false });
 				this.props.fetchConversation(this.props.uuid).then(function (res) {
-					return _this3.setState({ loading: false });
+					_this3.setState({ loading: false });
+					setTimeout(function () {
+						_this3.props.readMessage(_this3.props.uuid);
+					}, 1500);
+					_this3.scrollToBottom();
+				}).catch(function (err) {
+					_this3.setState({ loading: false });
 				});
-				setTimeout(function () {
-					_this3.props.readMessage(_this3.props.uuid);
-				}, 1500);
 			}
-			this.scrollToBottom();
 		}
 	}, {
 		key: 'handleInput',
@@ -37318,11 +37327,7 @@ var ConversationDetail = function (_React$Component) {
 						'\xD7'
 					)
 				) : "",
-				loading || !conversation.messages ? _react2.default.createElement(
-					'div',
-					null,
-					'loading...'
-				) : _react2.default.createElement(
+				loading ? _react2.default.createElement(_loading2.default, null) : conversation && conversation.messages ? _react2.default.createElement(
 					'ul',
 					{ className: 'message_list', ref: function ref(el) {
 							_this4.messageList = el;
@@ -37330,8 +37335,8 @@ var ConversationDetail = function (_React$Component) {
 					conversation.messages.map(function (message, idx) {
 						return _react2.default.createElement(_message2.default, { message: message, key: idx });
 					})
-				),
-				_react2.default.createElement(
+				) : _react2.default.createElement(_not_found2.default, { content: 'Cannot find messages for this conversation' }),
+				conversation && conversation.messages ? _react2.default.createElement(
 					'form',
 					{ onSubmit: function onSubmit(e) {
 							return _this4.handleSubmit(e);
@@ -37344,7 +37349,7 @@ var ConversationDetail = function (_React$Component) {
 							}, value: message }),
 						message ? _react2.default.createElement('input', { type: 'submit', value: 'Send' }) : ""
 					)
-				)
+				) : ""
 			);
 		}
 	}]);
@@ -37392,6 +37397,66 @@ var Message = function Message(_ref) {
 };
 
 exports.default = Message;
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Loading = function Loading() {
+	return _react2.default.createElement(
+		"div",
+		{ className: "loading" },
+		_react2.default.createElement("img", { src: "https://res.cloudinary.com/dq132990i/image/upload/v1557432458/playcan/loading_qgrnae.gif" })
+	);
+};
+
+exports.default = Loading;
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NotFound = function NotFound(_ref) {
+	var content = _ref.content;
+	return _react2.default.createElement(
+		'div',
+		{ className: 'not-found' },
+		_react2.default.createElement('img', { src: 'https://res.cloudinary.com/dq132990i/image/upload/v1569200508/playcan/ef3znsnnkulnsrcqmvbx.png' }),
+		_react2.default.createElement(
+			'span',
+			null,
+			content
+		)
+	);
+};
+
+exports.default = NotFound;
 
 /***/ })
 /******/ ]);
